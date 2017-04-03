@@ -4,7 +4,6 @@
 
             <div class="row">
 
-
                 <!-- *** LEFT COLUMN ***
   _________________________________________________________ -->
 
@@ -105,7 +104,7 @@ _________________________________________________________ -->
                                 </div>
                                 <!-- /.image -->
                                 <div class="text">
-                                    <h3><a href="shop-detail.html">Fur coat with very but very very long name</a></h3>
+                                    <h3><router-link to="/product-detail/fd">Fur coat with very but very very long name</router-link></h3>
                                     <p class="price">$143.00</p>
                                     <p class="buttons">
                                         <a href="shop-detail.html" class="btn btn-default">View detail</a>
@@ -310,7 +309,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  #content {
-    margin-top: 30px;
-  }
 </style>
