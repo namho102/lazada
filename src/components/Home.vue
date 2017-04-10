@@ -1,5 +1,16 @@
 <style scoped>
 
+  .products {
+    column-count: 3;
+    -webkit-column-count: 3;
+    column-gap: 0;
+    -webkit-column-gap: 0;
+  }
+
+  .product-panel {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
 
 
 </style>
@@ -72,15 +83,17 @@
                 _________________________________________________________ -->
             <div class="col-sm-9">
                 <template>
-                    <div class="row products">
-                        <div class="col-md-4 col-sm-6" v-for="product in products">
+                    <div class="products">
+                        <div class="product-panel" v-for="product in products">
+
+                            <!-- <div class="col-md-4 product"> -->
                             <div class="product">
                                 <div class="image">
-                                    <img :src="product.imageURL" class="img-responsive image1" alt="">
+                                    <img :src="product.imageURL" class="img-responsive" alt="">
                                 </div>
                                 <!-- /.image -->
                                 <div class="text">
-                                    <h3><router-link to="/product-detail/fd">{{ product.name}}</router-link></h3>
+                                    <h3><router-link :to="{ name: 'ProductDetail', params: { id: product.product_id }}">{{ product.name}}</router-link></h3>
                                     <p class="price">${{product.price}}</p>
                                     <p class="buttons">
                                         <a href="shop-detail.html" class="btn btn-default">View detail</a>
@@ -131,12 +144,14 @@
 
 import axios from 'axios'
 import uniq from 'lodash/uniq'
+
 export default {
     name: 'Home',
     mounted: function() {
         this.getProducts()
         console.log('mounted: got here')
     },
+
     data: function() {
         return {
             message: 'Course List Row',
@@ -159,7 +174,7 @@ export default {
                     dataType: 'json',
                 })
                 .then(function(response) {
-                    console.log(JSON.stringify(response.data))
+                    // console.log(JSON.stringify(response.data))
                     self.products = response.data
                 })
                 .catch(function(error) {
