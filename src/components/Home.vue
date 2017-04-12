@@ -1,6 +1,6 @@
 <style scoped>
 
-  .products {
+  /*.products {
     column-count: 3;
     -webkit-column-count: 3;
     column-gap: 0;
@@ -10,6 +10,11 @@
   .product-panel {
     padding-right: 15px;
     padding-left: 15px;
+  }*/
+
+  img {
+    display: inline-block;
+    height: 200px;
   }
 
 
@@ -86,8 +91,8 @@
                     <div class="products">
                         <div class="product-panel" v-for="product in products">
 
-                            <!-- <div class="col-md-4 product"> -->
-                            <div class="product">
+                            <div class="col-md-4 product">
+                            <!-- <div class="product"> -->
                                 <div class="image">
                                     <img :src="product.imageURL" class="img-responsive" alt="">
                                 </div>

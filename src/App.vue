@@ -74,22 +74,22 @@ _________________________________________________________ -->
                     <h4 class="modal-title" id="Login">Customer login</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="customer-orders.html" method="post">
+                    <form>
                         <div class="form-group">
-                            <input type="text" class="form-control" id="email_modal" placeholder="email">
+                            <input type="text" v-model="email "class="form-control" id="email_modal" placeholder="email">
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" id="password_modal" placeholder="password">
+                            <input type="password" v-model="password" class="form-control" id="password_modal" placeholder="password">
                         </div>
 
                         <p class="text-center">
-                            <button class="btn btn-template-main"><i class="fa fa-sign-in"></i> Log in</button>
+                            <button class="btn btn-template-main" @click='login'><i class="fa fa-sign-in"></i> Log in</button>
                         </p>
 
                     </form>
 
                     <p class="text-center text-muted">Not registered yet?</p>
-                    <p class="text-center text-muted"><a href="customer-register.html"><strong>Register now</strong></a>! It is easy and done in 1&nbsp;minute and gives you access to special discounts and much more!</p>
+                    <p class="text-center text-muted"><a href=""><strong>Register now</strong></a>! It is easy and done in 1&nbsp;minute and gives you access to special discounts and much more!</p>
 
                 </div>
             </div>
@@ -104,8 +104,38 @@ _________________________________________________________ -->
 </template>
 
 <script>
+
+import axios from 'axios';
+import jwtDecode from 'jwt-decode';
+
 export default {
-  name: 'app'
+  name: 'app',
+  data() {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  methods: {
+    login() {
+      event.preventDefault()
+
+      axios.post('http://localhost:3000/authenticate', {
+        email: this.email,
+        password: this.password
+      })
+      .then(function (response) {
+        console.log(response.data);
+        document.cookie = "token=" + response.data.token;
+        // console.log(jwtDecode(response.data.token));
+
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    }
+  }
 }
 </script>
 
