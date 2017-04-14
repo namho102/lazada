@@ -21,7 +21,7 @@ _________________________________________________________ -->
                             <a href="#" v-if="!logged" data-toggle="modal" data-target="#login-modal"><i class="fa fa-sign-in"></i> <span class="hidden-xs text-uppercase">Sign in</span></a>
                             <router-link v-if="!logged"  to="/register"><i class="fa fa-user"></i> <span class="hidden-xs text-uppercase">Sign up</span></router-link>
 
-                            <a v-if="logged" @click='logout()' ><i class="fa fa-sign-out"></i> <span class="hidden-xs text-uppercase">Logout</span></a>
+                            <a v-if="logged" @click='logout' ><i class="fa fa-sign-out"></i> <span class="hidden-xs text-uppercase">Logout</span></a>
                         </div>
 
                     </div>
@@ -152,8 +152,11 @@ export default {
       localStorage.removeItem('user_id');
       localStorage.removeItem('email');
 
-      this.logged = false;
-      $("#closeBtn").click();
+        setTimeout(()=> {
+          this.logged = false;
+        }, 0)
+
+
     }
   }
 }
