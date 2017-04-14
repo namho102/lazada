@@ -83,6 +83,14 @@ _________________________________________________________ -->
                             <input type="password" v-model="password" class="form-control" id="password_modal" placeholder="password">
                         </div>
 
+
+                        <p v-for="error in errors" class="error">
+                          {{ error }}
+                        </p>
+                        <!-- <p class="errors">Invalid credentials</p>
+                        <p class="errors">Email field is required</p>
+                        <p class="errors">Password field is required</p> -->
+
                         <p class="text-center">
                             <button class="btn btn-template-main" @click='login'><i class="fa fa-sign-in"></i> Log in</button>
                         </p>
@@ -114,6 +122,7 @@ export default {
   data() {
     return {
       logged: false,
+      errors: [],
       email: '',
       password: ''
     }
@@ -126,26 +135,43 @@ export default {
   methods: {
     login() {
       event.preventDefault()
-      let self = this;
-      axios.post('http://localhost:3000/authenticate', {
-        email: this.email,
-        password: this.password
-      })
-      .then(function (response) {
-        console.log(response.data);
-        var user = jwtDecode(response.data.token);
-        console.log(user);
+      this.errors = [];
 
-        localStorage.setItem("user_id", user.user_id);
-        localStorage.setItem("email", user.email);
+      if(!this.email) {
+        this.errors.push("Email field is required")
+      }
+      if(!this.password) {
+        this.errors.push("Password field is required");
+      }
+      if(this.password && this.email) {
+        let self = this;
+        axios.post('http://localhost:3000/authenticate', {
+          email: this.email,
+          password: this.password
+        })
+        .then(function (response) {
+          let data = response.data;
+          if(data.success) {
+            var user = jwtDecode(response.data.token);
+            // console.log(user);
 
-        $("#closeBtn").click();
-        self.logged = true;
+            localStorage.setItem("user_id", user.user_id);
+            localStorage.setItem("email", user.email);
 
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+            $("#closeBtn").click();
+            self.logged = true;
+          }
+          else {
+            self.errors.push(data.message);
+          }
+
+        })
+        .catch(function (error) {
+          console.log(error);
+
+        });
+      }
+
 
     },
     logout() {
@@ -257,9 +283,12 @@ export default {
       margin-top: 15px;
   }
 
-  .menu{
-      cursor: pointer;
+  .error {
+    color: #d9534f;
+    font-weight: bold;
   }
+
+
 
   @media screen and (min-width: 768px) {
       .largenav {

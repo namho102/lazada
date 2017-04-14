@@ -509,9 +509,9 @@ body.boxed .navbar-affixed-top.affix {
   color: #38a7bb;
 }
 #login-modal p {
-  font-weight: 300;
+  /*font-weight: 300;*/
   margin-bottom: 20px;
-  font-size: 13px;
+  /*font-size: 13px;*/
 }
 /* buttons  */
 .btn {
