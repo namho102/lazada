@@ -10,17 +10,18 @@ _________________________________________________________ -->
                     <div class="col-xs-5 contact">
                     </div>
                     <div class="col-xs-7">
-                        <div class="social">
+                        <!-- <div class="social">
                             <a href="#" class="external facebook" data-animate-hover="pulse"><i class="fa fa-facebook"></i></a>
                             <a href="#" class="external gplus" data-animate-hover="pulse"><i class="fa fa-google-plus"></i></a>
                             <a href="#" class="external twitter" data-animate-hover="pulse"><i class="fa fa-twitter"></i></a>
                             <a href="#" class="email" data-animate-hover="pulse"><i class="fa fa-envelope"></i></a>
-                        </div>
+                        </div> -->
 
                         <div class="login">
-                            <a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-sign-in"></i> <span class="hidden-xs text-uppercase">Sign in</span></a>
-                            <router-link to="/register"><i class="fa fa-user"></i> <span class="hidden-xs text-uppercase">Sign up</span></router-link>
+                            <a href="#" v-if="!logged" data-toggle="modal" data-target="#login-modal"><i class="fa fa-sign-in"></i> <span class="hidden-xs text-uppercase">Sign in</span></a>
+                            <router-link v-if="!logged"  to="/register"><i class="fa fa-user"></i> <span class="hidden-xs text-uppercase">Sign up</span></router-link>
 
+                            <a v-if="logged" @click='logout()' ><i class="fa fa-sign-out"></i> <span class="hidden-xs text-uppercase">Logout</span></a>
                         </div>
 
                     </div>
@@ -70,7 +71,7 @@ _________________________________________________________ -->
 
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <button type="button" id="closeBtn" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="Login">Customer login</h4>
                 </div>
                 <div class="modal-body">
@@ -112,28 +113,47 @@ export default {
   name: 'app',
   data() {
     return {
+      logged: false,
       email: '',
       password: ''
+    }
+  },
+  mounted() {
+    if(localStorage.getItem('user_id')) {
+      this.logged = true;
     }
   },
   methods: {
     login() {
       event.preventDefault()
-
+      let self = this;
       axios.post('http://localhost:3000/authenticate', {
         email: this.email,
         password: this.password
       })
       .then(function (response) {
         console.log(response.data);
-        document.cookie = "token=" + response.data.token;
-        // console.log(jwtDecode(response.data.token));
+        var user = jwtDecode(response.data.token);
+        console.log(user);
+
+        localStorage.setItem("user_id", user.user_id);
+        localStorage.setItem("email", user.email);
+
+        $("#closeBtn").click();
+        self.logged = true;
 
       })
       .catch(function (error) {
         console.log(error);
       });
 
+    },
+    logout() {
+      localStorage.removeItem('user_id');
+      localStorage.removeItem('email');
+
+      this.logged = false;
+      $("#closeBtn").click();
     }
   }
 }
