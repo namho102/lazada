@@ -5,7 +5,7 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <p class="text-muted lead">You currently have 3 item(s) in your cart.</p>
+                        <p class="text-muted lead">You currently have {{ cartNum }} item(s) in your cart.</p>
                     </div>
 
 
@@ -22,50 +22,32 @@
                                                 <th colspan="2">Product</th>
                                                 <th>Quantity</th>
                                                 <th>Unit price</th>
-                                                <th>Discount</th>
                                                 <th colspan="2">Total</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
+                                            <tr v-for="item in items">
                                                 <td>
                                                     <a href="#">
-                                                        <img src="static/img/detailsquare.jpg" alt="White Blouse Armani">
+                                                        <!-- <img src="static/img/detailsquare.jpg" alt="White Blouse Armani"> -->
                                                     </a>
                                                 </td>
-                                                <td><a href="#">White Blouse Armani</a>
+                                                <td><a href="#">{{ item.name }}</a>
                                                 </td>
                                                 <td>
-                                                    <input type="number" value="2" class="form-control">
+                                                    <input type="number" v-model:value='item.quantity' class="form-control">
                                                 </td>
-                                                <td>$123.00</td>
-                                                <td>$0.00</td>
-                                                <td>$246.00</td>
+                                                <td>${{ item.price }}</td>
+                                                <td>${{ item.price*item.quantity }}</td>
                                                 <td><a href="#"><i class="fa fa-trash-o"></i></a>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="#">
-                                                        <img src="static/img/basketsquare.jpg" alt="Black Blouse Armani">
-                                                    </a>
-                                                </td>
-                                                <td><a href="#">Black Blouse Armani</a>
-                                                </td>
-                                                <td>
-                                                    <input type="number" value="1" class="form-control">
-                                                </td>
-                                                <td>$200.00</td>
-                                                <td>$0.00</td>
-                                                <td>$200.00</td>
-                                                <td><a href="#"><i class="fa fa-trash-o"></i></a>
-                                                </td>
-                                            </tr>
+
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th colspan="5">Total</th>
-                                                <th colspan="2">$446.00</th>
+                                                <th colspan="4">Total</th>
+                                                <th colspan="2">${{getTotal()}}</th>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -138,11 +120,55 @@
 </template>
 
 <script>
+
+import axios from 'axios';
+
 export default {
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      total: 0
     }
+  },
+  methods: {
+    getTotal() {
+      let total = 0
+      for(let item of this.items) {
+        total += item.price*item.quantity
+      }
+      return total
+    }
+  },
+  mounted() {
+    if(this.isLogged()) {
+      var self = this;
+      axios.get('http://localhost:3000/carts/' + this.user_id)
+      .then(function(response) {
+          let items = response.data;
+          self.cartNum = items.length;
+
+          for(let item of items) {
+            axios.get('http://localhost:3000/products/' + item.product_id)
+                .then((response) => {
+                    let product = response.data;
+                    item.name = product.name;
+                    item.price = product.price;
+                    self.items.push(item);
+                })
+                .catch(function(error) {
+                    console.log(error);
+
+                    self.$message({
+                        type: 'error',
+                        message: 'This product has been removed'
+                    });
+                });
+          }
+      })
+      .catch(function(error) {
+          console.log(error)
+      })
+    }
+
   }
 }
 </script>

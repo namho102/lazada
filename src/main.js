@@ -9,13 +9,16 @@ Vue.config.productionTip = false
 Vue.mixin({
   data() {
     return {
-      user_id: ''
+      user_id: '',
+      items: [],
+      cartNum: 0
     }
   },
   methods:  {
     ObjectId: (m = Math, d = Date, h = 16, s = s => m.floor(s).toString(h)) =>
         s(d.now() / 1000) + ' '.repeat(h).replace(/./g, () => s(m.random() * h)),
     isLogged() {
+      this.user_id = localStorage.getItem('user_id')
       return localStorage.getItem('user_id')
     }
   }

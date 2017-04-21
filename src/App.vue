@@ -124,8 +124,8 @@ export default {
       logged: false,
       errors: [],
       email: '',
-      password: '',
-      cartNum: 0
+      password: ''
+
     }
   },
   mounted() {
