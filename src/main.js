@@ -6,6 +6,21 @@ import router from './router'
 
 Vue.config.productionTip = false
 
+Vue.mixin({
+  data() {
+    return {
+      user_id: ''
+    }
+  },
+  methods:  {
+    ObjectId: (m = Math, d = Date, h = 16, s = s => m.floor(s).toString(h)) =>
+        s(d.now() / 1000) + ' '.repeat(h).replace(/./g, () => s(m.random() * h)),
+    isLogged() {
+      return localStorage.getItem('user_id')
+    }
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#all',

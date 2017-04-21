@@ -43,17 +43,17 @@
 
                                       </div>
 
-
                                    </div>
 
-                                   <p class="price">$124.00</p>
+                                   <p class="price">$ {{ product.price }}</p>
 
                                    <p class="text-center">
-                                       <button type="submit" class="btn btn-template-main"><i class="fa fa-shopping-cart"></i> Add to cart</button>
-                                       <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Add to wishlist"><i class="fa fa-heart-o"></i>
-                                       </button>
-                                   </p>
+                                       <button @click="addToCart" class="btn btn-template-main" ><i class="fa fa-shopping-cart"></i> Add to cart</button>
 
+                                       <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Add to wishlist"><i class="fa fa-heart-o"></i></button>
+
+                                   </p>
+                                   <p class="error">{{ error }}</p>
                                </form>
                            </div>
 <!--
@@ -117,32 +117,66 @@
 <script>
 
 import axios from 'axios'
+const ObjectId = (m = Math, d = Date, h = 16, s = s => m.floor(s).toString(h)) =>
+    s(d.now() / 1000) + ' '.repeat(h).replace(/./g, () => s(m.random() * h))
+
 export default {
   name: 'productdetail',
   data () {
     return {
-      product: {}
+      product: {},
+      error: ''
+    }
+  },
+  methods: {
+    addToCart(e) {
+      e.preventDefault()
+      console.log('add to cart');
+      let userID= localStorage.getItem('user_id');
+      if(this.isLogged()) {
+        axios.post('http://localhost:3000/carts', {
+          'cart_id': this.ObjectId(),
+          'user_id': userID,
+          'product_id': this.$route.params.id,
+          'quantity': 1
+        })
+            .then((response) => {
+                self.product = response.data;
+            })
+            .catch(function(error) {
+                console.log(error);
+
+                self.$message({
+                    type: 'error',
+                    message: 'This product has been removed'
+                });
+            });
+      } else {
+        this.error = 'You must log in to perform this action.';
+      }
     }
   },
   mounted () {
     var self = this;
-      axios.get('http://localhost:3000/products/' + this.$route.params.id)
-          .then((response) => {
-              self.product = response.data;
-          })
-          .catch(function(error) {
-              console.log(error);
+    axios.get('http://localhost:3000/products/' + this.$route.params.id)
+        .then((response) => {
+            self.product = response.data;
+        })
+        .catch(function(error) {
+            console.log(error);
 
-              self.$message({
-                  type: 'error',
-                  message: 'This product has been removed'
-              });
-          });
+            self.$message({
+                type: 'error',
+                message: 'This product has been removed'
+            });
+        });
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  .error {
+        text-align: center;
+  }
 </style>
