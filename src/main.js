@@ -10,6 +10,7 @@ Vue.mixin({
   data() {
     return {
       user_id: '',
+      logged: false,
       items: [],
       cartNum: 0
     }

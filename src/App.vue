@@ -98,7 +98,7 @@ _________________________________________________________ -->
                     </form>
 
                     <p class="text-center text-muted">Not registered yet?</p>
-                    <p class="text-center text-muted"><a href=""><strong>Register now</strong></a>! It is easy and done in 1&nbsp;minute and gives you access to special discounts and much more!</p>
+                    <p class="text-center text-muted">  <router-link v-if="!logged"  to="/register"><strong>Register now</strong></router-link>! It is easy and done in 1&nbsp;minute and gives you access to special discounts and much more!</p>
 
                 </div>
             </div>
@@ -121,7 +121,6 @@ export default {
   name: 'app',
   data() {
     return {
-      logged: false,
       errors: [],
       email: '',
       password: ''
@@ -140,7 +139,6 @@ export default {
       })
       .catch(function (error) {
         console.log(error);
-
       });
     }
   },

@@ -19,21 +19,20 @@
 
                     <hr>
 
-                    <form action="customer-orders.html" method="post">
-                        <div class="form-group">
-                            <label for="name-login">Name</label>
-                            <input type="text" class="form-control" id="name-login">
-                        </div>
+                    <form>
                         <div class="form-group">
                             <label for="email-login">Email</label>
-                            <input type="text" class="form-control" id="email-login">
+                            <input v-model='email' type="text" class="form-control" id="email-login">
                         </div>
                         <div class="form-group">
                             <label for="password-login">Password</label>
-                            <input type="password" class="form-control" id="password-login">
+                            <input v-model='password' type="password" class="form-control" id="password-login">
+                        </div>
+                        <div>
+                          <p v-for='error in errors'>{{ error }}</p>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-template-main"><i class="fa fa-user-md"></i> Register</button>
+                            <button  @click='signUp' class="btn btn-template-main"><i class="fa fa-user-md"></i> Register</button>
                         </div>
                     </form>
                 </div>
@@ -50,13 +49,47 @@
 </template>
 
 <script>
+import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
 export default {
     name: 'register',
     data() {
         return {
-            msg: 'Welcome to Your Vue.js App'
+            email: '',
+            password: '',
+            errors: []
         }
+    },
+    methods: {
+      signUp(e) {
+        e.preventDefault();
+        var self = this;
+        var user_id = this.ObjectId();
+        axios.post('http://localhost:3000/users', {
+          'user_id': user_id,
+          'email': self.email,
+          'password': self.password
+        })
+        .then((res) => {
+          var obj = res.data;
+          if(obj.token) {
+            var user = jwtDecode(obj.token);
+
+            localStorage.setItem("user_id", user.user_id);
+            localStorage.setItem("email", user.email);
+            self.logged = true;
+            self.$router.push({ name: 'Home' })
+          }
+          else {
+            self.errors.push(obj.message);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+
+      }
     }
 }
 

@@ -164,11 +164,6 @@ export default {
         })
         .catch(function(error) {
             console.log(error);
-
-            self.$message({
-                type: 'error',
-                message: 'This product has been removed'
-            });
         });
   }
 }
