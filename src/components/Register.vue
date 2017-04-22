@@ -29,7 +29,7 @@
                             <input v-model='password' type="password" class="form-control" id="password-login">
                         </div>
                         <div>
-                          <p v-for='error in errors'>{{ error }}</p>
+                          <p class="error" v-for='error in errors'>{{ error }}</p>
                         </div>
                         <div class="text-center">
                             <button  @click='signUp' class="btn btn-template-main"><i class="fa fa-user-md"></i> Register</button>
@@ -64,33 +64,50 @@ export default {
     methods: {
       signUp(e) {
         e.preventDefault();
-        var self = this;
-        var user_id = this.ObjectId();
-        axios.post('http://localhost:3000/users', {
-          'user_id': user_id,
-          'email': self.email,
-          'password': self.password
-        })
-        .then((res) => {
-          var obj = res.data;
-          if(obj.token) {
-            var user = jwtDecode(obj.token);
+        this.errors = [];
 
-            localStorage.setItem("user_id", user.user_id);
-            localStorage.setItem("email", user.email);
-            self.logged = true;
-            self.$router.push({ name: 'Home' })
-          }
-          else {
-            self.errors.push(obj.message);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        })
+        if(!this.email) {
+          this.errors.push("Email field is required")
+        }
+        if(!this.password) {
+          this.errors.push("Password field is required");
+        }
+        if(this.password && this.email) {
+          var self = this;
+          var user_id = this.ObjectId();
+          axios.post('http://localhost:3000/users', {
+            'user_id': user_id,
+            'email': self.email,
+            'password': self.password
+          })
+          .then((res) => {
+            var obj = res.data;
+            if(obj.token) {
+              var user = jwtDecode(obj.token);
 
+              localStorage.setItem("user_id", user.user_id);
+              localStorage.setItem("email", user.email);
+              self.logged = true;
+
+              self.$router.push({ name: 'Home' })
+            }
+            else {
+              self.errors.push(obj.message);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        }
       }
     }
 }
 
 </script>
+
+<style scoped>
+  .error {
+    color: #d9534f;
+    font-weight: bold;
+  }
+</style>

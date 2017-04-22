@@ -128,6 +128,7 @@ export default {
     }
   },
   mounted() {
+    console.log('mounted');
     var self = this;
     if(localStorage.getItem('user_id')) {
       this.user_id = localStorage.getItem('user_id');
@@ -141,6 +142,9 @@ export default {
         console.log(error);
       });
     }
+  },
+  updated() {
+    this.logged = this.isLogged()
   },
   methods: {
     login() {
