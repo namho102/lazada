@@ -48,9 +48,9 @@
                                    <p class="price">$ {{ product.price }}</p>
 
                                    <p class="text-center">
-                                       <button @click="addToCart" class="btn btn-template-main" ><i class="fa fa-shopping-cart"></i> Add to cart</button>
+                                       <button @click="addToCart" class="btn btn-template-main" v-bind:disabled="ok"><i class="fa fa-shopping-cart"></i> Add to cart</button>
 
-                                       <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Add to wishlist"><i class="fa fa-heart-o"></i></button>
+                                       <button v-if='ok' class="btn btn-success"><i class="fa fa-check"></i></button>
 
                                    </p>
                                    <p class="error">{{ error }}</p>
@@ -125,32 +125,30 @@ export default {
   data () {
     return {
       product: {},
-      error: ''
+      error: '',
+      ok: false
     }
   },
   methods: {
     addToCart(e) {
       e.preventDefault()
       console.log('add to cart');
-      let userID= localStorage.getItem('user_id');
+      let userID = localStorage.getItem('user_id');
       if(this.isLogged()) {
+        var self = this;
         axios.post('http://localhost:3000/carts', {
           'cart_id': this.ObjectId(),
           'user_id': userID,
           'product_id': this.$route.params.id,
           'quantity': 1
         })
-            .then((response) => {
-                self.product = response.data;
-            })
-            .catch(function(error) {
-                console.log(error);
-
-                self.$message({
-                    type: 'error',
-                    message: 'This product has been removed'
-                });
-            });
+        .then((response) => {
+          self.ok = true;
+          self.cartNum = self.cartNum + 1;
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
       } else {
         this.error = 'You must log in to perform this action.';
       }
