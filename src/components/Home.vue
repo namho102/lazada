@@ -94,7 +94,9 @@
                             <div class="col-md-4 product">
                             <!-- <div class="product"> -->
                                 <div class="image">
-                                    <img :src="product.imageURL" class="img-responsive" alt="">
+                                  <router-link :to="{ name: 'ProductDetail', params: { id: product.product_id }}"><img :src="product.imageURL" class="img-responsive" alt=""></router-link>
+                							</router-link>
+        
                                 </div>
                                 <!-- /.image -->
                                 <div class="text">

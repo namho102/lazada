@@ -184,41 +184,6 @@
                     </div>
                     <!-- /.col-md-9 -->
 
-                    <div class="col-md-3">
-
-                        <div class="box" id="order-summary">
-                            <div class="box-header">
-                                <h3>Order summary</h3>
-                            </div>
-                            <p class="text-muted">Shipping and additional costs are calculated based on the values you have entered.</p>
-
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <td>Order subtotal</td>
-                                            <th>$446.00</th>
-                                        </tr>
-                                        <tr>
-                                            <td>Shipping and handling</td>
-                                            <th>$10.00</th>
-                                        </tr>
-                                        <tr>
-                                            <td>Tax</td>
-                                            <th>$0.00</th>
-                                        </tr>
-                                        <tr class="total">
-                                            <td>Total</td>
-                                            <th>$456.00</th>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                        </div>
-
-                    </div>
-                    <!-- /.col-md-3 -->
 
                 </div>
                 <!-- /.row -->
@@ -247,6 +212,13 @@ export default {
     }
   },
   methods: {
+    getTotal() {
+      let total = 0
+      for(let item of this.items) {
+        total += item.price*item.quantity
+      }
+      return total
+    },
     handleNext() {
 
       console.log(this.current);
@@ -277,9 +249,10 @@ export default {
           this.order.items.push({product_id: item.product_id, quantity: item.quantity});
         }
 
+        this.order.order_id = this.ObjectId();
         this.order.user_id = this.isLogged();
         this.order.date = new Date().getTime();
-        this.order.toal = this.getTotal();
+        this.order.total = this.getTotal();
         this.order.state = 'Open';
         this.order.delivery_status = 'Unfulfilled';
         this.order.payment_status = 'Unpaid';
@@ -297,8 +270,6 @@ export default {
       if(this.current == 3) {
         $('.box-footer a.btn-template-main').text('Finish')
       }
-
-
 
 
     },
