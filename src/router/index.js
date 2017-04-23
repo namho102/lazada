@@ -6,7 +6,7 @@ import ProductDetail from '@/components/ProductDetail'
 import Cart from '@/components/Cart'
 import Checkout from '@/components/Checkout'
 
-// import  from '@/components/'
+import Search from '@/components/Search'
 
 Vue.use(Router)
 
@@ -26,6 +26,11 @@ export default new Router({
       path: '/product-detail/:id',
       name: 'ProductDetail',
       component: ProductDetail
+    },
+    {
+      path: '/search/:query',
+      name: 'Search',
+      component: Search
     },
     {
       path: '/cart',

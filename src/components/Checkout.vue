@@ -237,9 +237,8 @@
 
 <script>
 
-console.log();
 
-
+import axios from 'axios'
 
 export default {
   data () {
