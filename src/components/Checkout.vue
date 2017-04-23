@@ -11,13 +11,13 @@
                             <form>
 
                                 <ul class="nav nav-pills nav-justified">
-                                    <li class="disabled active"><a href="#"><i class="fa fa-map-marker"></i><br>Contact Info</a>
+                                    <li class="disabled active"><a ><i class="fa fa-map-marker"></i><br>Contact Info</a>
                                     </li>
-                                    <li class="disabled"><a href="#"><i class="fa fa-truck"></i><br>Delivery Method</a>
+                                    <li class="disabled"><a ><i class="fa fa-truck"></i><br>Delivery Method</a>
                                     </li>
-                                    <li class="disabled"><a href="#"><i class="fa fa-money"></i><br>Payment Method</a>
+                                    <li class="disabled"><a ><i class="fa fa-money"></i><br>Payment Method</a>
                                     </li>
-                                    <li class="disabled"><a href="#"><i class="fa fa-eye"></i><br>Order Review</a>
+                                    <li class="disabled"><a ><i class="fa fa-eye"></i><br>Order Review</a>
                                     </li>
                                 </ul>
 
@@ -25,14 +25,14 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label for="firstname">Name</label>
-                                                <input type="text" class="form-control" id="firstname">
+                                                <label for="name">Name</label>
+                                                <input v-model='order.customer.name' type="text" class="form-control" id="name">
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label for="lastname">Address</label>
-                                                <input type="text" class="form-control" id="lastname">
+                                                <label for="address">Address</label>
+                                                <input v-model='order.customer.address' type="text" class="form-control" id="address">
                                             </div>
                                         </div>
                                     </div>
@@ -41,14 +41,14 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label for="company">Email</label>
-                                                <input type="text" class="form-control" id="company">
+                                                <label for="email">Email</label>
+                                                <input v-model='order.customer.email' type="text" class="form-control" id="email">
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label for="street">Telephone</label>
-                                                <input type="text" class="form-control" id="street">
+                                                <label for="telephone">Telephone</label>
+                                                <input v-model.number='order.customer.telephone' type="number" class="form-control" id="telephone">
                                             </div>
                                         </div>
                                     </div>
@@ -68,7 +68,7 @@
 
                                                 <div class="box-footer text-center">
 
-                                                    <input type="radio" name="delivery" value="delivery1">
+                                                    <input type="radio" name="delivery" value="Standard" v-model='order.delivery_method'>
                                                 </div>
                                             </div>
                                         </div>
@@ -81,7 +81,7 @@
 
                                                 <div class="box-footer text-center">
 
-                                                    <input type="radio" name="delivery" value="delivery2">
+                                                    <input type="radio" name="delivery" value="UPS Next Day" v-model='order.delivery_method'>
                                                 </div>
                                             </div>
                                         </div>
@@ -103,7 +103,7 @@
 
                                                 <div class="box-footer text-center">
 
-                                                    <input type="radio" name="payment" value="payment1">
+                                                    <input type="radio" name="payment" value="Paypal" v-model='order.payment_method'>
                                                 </div>
                                             </div>
                                         </div>
@@ -117,7 +117,7 @@
 
                                                 <div class="box-footer text-center">
 
-                                                    <input type="radio" name="payment" value="payment3">
+                                                    <input type="radio" name="payment" value="Cash on delivery" v-model='order.payment_method'>
                                                 </div>
                                             </div>
                                         </div>
@@ -127,50 +127,44 @@
                                 </div>
 
                                 <div class="content" id="review">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th colspan="2">Product</th>
-                                                    <th>Quantity</th>
-                                                    <th>Unit price</th>
-                                                    <th>Discount</th>
-                                                    <th>Total</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        White Blouse Armani
-                                                    </td>
-                                                    <td><a href="#">White Blouse Armani</a>
-                                                    </td>
-                                                    <td>2</td>
-                                                    <td>$123.00</td>
-                                                    <td>$0.00</td>
-                                                    <td>$246.00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        Black Blouse Armani
-                                                    </td>
-                                                    <td><a href="#">Black Blouse Armani</a>
-                                                    </td>
-                                                    <td>1</td>
-                                                    <td>$200.00</td>
-                                                    <td>$0.00</td>
-                                                    <td>$200.00</td>
-                                                </tr>
-                                            </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th colspan="5">Total</th>
-                                                    <th>$446.00</th>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
+                                  <div class="table-responsive">
+                                      <table class="table">
+                                          <thead>
+                                              <tr>
+                                                  <th colspan="2">Product</th>
+                                                  <th>Quantity</th>
+                                                  <th>Unit price</th>
+                                                  <th colspan="2">Total</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                              <tr v-for="item in items">
+                                                  <td>
+                                                      <a href="#">
+                                                          <!-- <img src="static/img/detailsquare.jpg" alt="White Blouse Armani"> -->
+                                                      </a>
+                                                  </td>
+                                                  <td><a href="#">{{ item.name }}</a>
+                                                  </td>
+                                                  <td>
+                                                      <input type="number" v-model:value='item.quantity' class="form-control">
+                                                  </td>
+                                                  <td>${{ item.price }}</td>
+                                                  <td>${{ item.price*item.quantity }}</td>
+                                                  <td><a href="#"><i class="fa fa-trash-o"></i></a>
+                                                  </td>
+                                              </tr>
 
-                                    </div>
+                                          </tbody>
+                                          <tfoot>
+                                              <tr>
+                                                  <th colspan="4">Total</th>
+                                                  <th colspan="2">${{getTotal()}}</th>
+                                              </tr>
+                                          </tfoot>
+                                      </table>
+
+                                  </div>
                                     <!-- /.table-responsive -->
                                 </div>
                                 <div class="box-footer">
@@ -238,18 +232,25 @@
 <script>
 
 
-import axios from 'axios'
+import axios from 'axios';
 
 export default {
   data () {
     return {
-      current: 0
+      current: 0,
+      order: {
+        customer: {
+
+        },
+        items: []
+      }
     }
   },
   methods: {
     handleNext() {
 
       console.log(this.current);
+      //
       switch (this.current) {
         case 0:
           $("#delivery").css('display', 'block')
@@ -270,9 +271,35 @@ export default {
           $('ul.nav li').removeClass('active')
           $('ul.nav li:nth-child(' + num + ')').addClass('active')
       }
+      if($('.box-footer a.btn-template-main').text() == 'Finish') {
+        this.order.items = []
+        for(var item of this.items) {
+          this.order.items.push({product_id: item.product_id, quantity: item.quantity});
+        }
+
+        this.order.user_id = this.isLogged();
+        this.order.date = new Date().getTime();
+        this.order.toal = this.getTotal();
+        this.order.state = 'Open';
+        this.order.delivery_status = 'Unfulfilled';
+        this.order.payment_status = 'Unpaid';
+
+        let newOrder = JSON.parse(JSON.stringify(this.order));
+        axios.post('http://localhost:3000/orders', newOrder)
+        .then((req) => {
+          console.log(req.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+
+      }
       if(this.current == 3) {
         $('.box-footer a.btn-template-main').text('Finish')
       }
+
+
+
 
     },
     handleBack() {
@@ -299,10 +326,40 @@ export default {
       }
 
 
+    },
+    getTotal() {
+      let total = 0
+      for(let item of this.items) {
+        total += item.price*item.quantity
+      }
+      return total;
     }
   },
   mounted() {
+    if(this.isLogged()) {
+      var self = this;
+      axios.get('http://localhost:3000/carts/' + this.user_id)
+      .then(function(response) {
+          let items = response.data;
+          self.cartNum = items.length;
 
+          for(let item of items) {
+            axios.get('http://localhost:3000/products/' + item.product_id)
+                .then((response) => {
+                    let product = response.data;
+                    item.name = product.name;
+                    item.price = product.price;
+                    self.items.push(item);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+          }
+      })
+      .catch(function(error) {
+          console.log(error)
+      })
+    }
   }
 }
 
