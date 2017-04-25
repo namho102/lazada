@@ -8,6 +8,7 @@ import Checkout from '@/components/Checkout'
 
 import Search from '@/components/Search'
 import OrderHistory from '@/components/OrderHistory'
+import OrderDetail from '@/components/OrderDetail'
 
 Vue.use(Router)
 
@@ -47,6 +48,11 @@ export default new Router({
       path: '/orderhistory',
       name: 'OrderHistory',
       component: OrderHistory
+    },
+    {
+      path: '/orderdetail/:orderID',
+      name: 'OrderDetail',
+      component: OrderDetail
     }
   ]
 })

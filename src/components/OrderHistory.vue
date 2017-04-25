@@ -30,7 +30,7 @@
                                             <td>$ {{ order.total }}</td>
                                             <td><span class="label label-info">{{ order.state }}</span>
                                             </td>
-                                            <td><a href="customer-order.html" class="btn btn-template-main btn-sm" @click='view'>View</a>
+                                            <td><a class="btn btn-template-main btn-sm" @click='view(order.order_id)'>View</a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -105,7 +105,10 @@ export default {
     }
   },
   methods: {
-
+    view(orderID) {
+      console.log(orderID);
+      this.$router.push({name: 'OrderDetail', params: {orderID: orderID}})
+    }
   },
   mounted(){
     if(this.isLogged()) {
