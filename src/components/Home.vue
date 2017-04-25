@@ -1,22 +1,13 @@
 <style scoped>
 
-  /*.products {
-    column-count: 3;
-    -webkit-column-count: 3;
-    column-gap: 0;
-    -webkit-column-gap: 0;
-  }
+a {
+    cursor: pointer;
+}
 
-  .product-panel {
-    padding-right: 15px;
-    padding-left: 15px;
-  }*/
-
-  img {
+img {
     display: inline-block;
     height: 200px;
-  }
-
+}
 
 </style>
 
@@ -43,7 +34,7 @@
                     <div class="panel-body">
                         <ul class="nav nav-pills nav-stacked category-menu">
                             <li v-for="category in productCategories">
-                                <a href="shop-category.html"> {{category}} </a>
+                                <a @click="filter(category)"> {{category}} </a>
                             </li>
                         </ul>
 
@@ -72,8 +63,6 @@
                     </div>
                 </div>
 
-
-
                 <!-- *** MENUS AND FILTERS END *** -->
 
 
@@ -92,11 +81,11 @@
                         <div class="product-panel" v-for="product in products">
 
                             <div class="col-md-4 product">
-                            <!-- <div class="product"> -->
+                                <!-- <div class="product"> -->
                                 <div class="image">
-                                  <router-link :to="{ name: 'ProductDetail', params: { id: product.product_id }}"><img :src="product.imageURL" class="img-responsive" alt=""></router-link>
-                							</router-link>
-        
+                                    <router-link :to="{ name: 'ProductDetail', params: { id: product.product_id }}"><img :src="product.imageURL" class="img-responsive" alt=""></router-link>
+                                    </router-link>
+
                                 </div>
                                 <!-- /.image -->
                                 <div class="text">
@@ -117,23 +106,6 @@
                     <p class="loadMore">
                         <a href="#" class="btn btn-template-main"><i class="fa fa-chevron-down"></i> Load more</a>
                     </p>
-
-                    <!-- <ul class="pagination">
-                            <li><a href="#">&laquo;</a>
-                            </li>
-                            <li class="active"><a href="#">1</a>
-                            </li>
-                            <li><a href="#">2</a>
-                            </li>
-                            <li><a href="#">3</a>
-                            </li>
-                            <li><a href="#">4</a>
-                            </li>
-                            <li><a href="#">5</a>
-                            </li>
-                            <li><a href="#">&raquo;</a>
-                            </li>
-                        </ul> -->
                 </div>
             </div>
             <!-- /.col-md-9 -->
@@ -162,16 +134,19 @@ export default {
     data: function() {
         return {
             message: 'Course List Row',
+            initialProducts: [],
             products: []
         }
     },
     computed: {
         productCategories() {
-                return uniq(this.products.map(p => p.category))
-            },
-            productBrands() {
-                return uniq(this.products.map(p => p.brand))
-            }
+            let categories = uniq(this.initialProducts.map(p => p.category));
+            categories.push('All')
+            return categories;
+        },
+        productBrands() {
+            return uniq(this.initialProducts.map(p => p.brand))
+        }
     },
     methods: {
         getProducts: function() {
@@ -182,12 +157,21 @@ export default {
                 })
                 .then(function(response) {
                     // console.log(JSON.stringify(response.data))
-                    self.products = response.data
+                    self.initialProducts = self.products = response.data
                 })
                 .catch(function(error) {
                     console.log(error)
                 })
-        }
+        },
+        filter(category) {
+            if(category == 'All') {
+              this.products = this.initialProducts;
+              return;
+            }
+            this.products = $.grep(this.initialProducts, function(element, index) {
+                return (element.category === category);
+            });
+        },
     }
 }
 
