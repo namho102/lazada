@@ -108,11 +108,11 @@ export default {
         let self = this;
         axios.delete('http://localhost:3000/carts/' + id)
         .then((response) => {
-         let items = this.items.filter((el) => {
-          return el.cart_id != id
-        })
-         self.items = items;
-
+           let items = this.items.filter((el) => {
+            return el.cart_id != id
+          })
+           self.items = items;
+           self.cartNum--;
        })
         .catch(function(error) {
           console.log(error);

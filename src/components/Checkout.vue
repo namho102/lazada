@@ -167,6 +167,7 @@
                                   </div>
                                     <!-- /.table-responsive -->
                                 </div>
+
                                 <div class="box-footer">
                                     <div class="pull-left">
                                         <a @click="handleBack()" class="btn btn-default"><i class="fa fa-chevron-left"></i>Back</a>
@@ -261,6 +262,12 @@ export default {
         axios.post('http://localhost:3000/orders', newOrder)
         .then((req) => {
           console.log(req.data);
+          //delete carts
+          for(let item of this.items) {
+            this.deleteCart(item.cart_id)
+          }
+          //go to order history
+          this.$router.push({name: 'OrderHistory'});
         })
         .catch((err) => {
           console.log(err);
@@ -304,7 +311,17 @@ export default {
         total += item.price*item.quantity
       }
       return total;
-    }
+    },
+    deleteCart(id) {
+        let self = this;
+        axios.delete('http://localhost:3000/carts/' + id)
+        .then((response) => {
+          console.log(response.data);
+       })
+        .catch(function(error) {
+          console.log(error);
+        })
+      }
   },
   mounted() {
     if(this.isLogged()) {
@@ -342,6 +359,10 @@ export default {
     padding: 10px;
   }
 
+  input[type=radio] {
+    width: 3em;
+    height: 3em;
+  }
   #delivery, #payment, #review {
     display: none;
   }

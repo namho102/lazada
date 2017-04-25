@@ -136,6 +136,7 @@ export default {
       let userID = localStorage.getItem('user_id');
       if(this.isLogged()) {
         var self = this;
+        console.log(this.cartNum);
         axios.post('http://localhost:3000/carts', {
           'cart_id': this.ObjectId(),
           'user_id': userID,
