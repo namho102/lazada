@@ -39,7 +39,7 @@
                                                 </td>
                                                 <td>${{ item.price }}</td>
                                                 <td>${{ item.price*item.quantity }}</td>
-                                                <td><a href="#"><i class="fa fa-trash-o"></i></a>
+                                                <td><a @click="handleClickDelete(item.cart_id)"><i class="fa fa-trash-o"></i></a>
                                                 </td>
                                             </tr>
 
@@ -76,7 +76,7 @@
                     </div>
                     <!-- /.col-md-9 -->
 
-                    
+
 
                 </div>
 
@@ -103,7 +103,21 @@ export default {
         total += item.price*item.quantity
       }
       return total
-    }
+    },
+    handleClickDelete(id) {
+        let self = this;
+        axios.delete('http://localhost:3000/carts/' + id)
+        .then((response) => {
+         let items = this.items.filter((el) => {
+          return el.cart_id != id
+        })
+         self.items = items;
+
+       })
+        .catch(function(error) {
+          console.log(error);
+        })
+      }
   },
   mounted() {
     if(this.isLogged()) {
@@ -137,5 +151,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  a {
+    cursor: pointer;
+  }
 </style>

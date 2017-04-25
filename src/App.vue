@@ -236,7 +236,7 @@ export default {
       cursor: pointer;
   }
 
-  .cart-button {
+  a.cart-button {
       background-color: #2469d9;
       box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .23), inset 1px 1px 0 0 hsla(0, 0%, 100%, .2);
       padding: 7px 0;
@@ -246,7 +246,7 @@ export default {
       font-weight: 500;
       width: 120px;
       display: inline-block;
-      color: #FFFFFF;
+      color: #fff;
       text-decoration: none;
       color: inherit;
       border: none;
