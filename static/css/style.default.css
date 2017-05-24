@@ -2475,7 +2475,7 @@ fieldset[disabled] .btn-template-primary.active {
   font-weight: 300;
 }
 #customer-order .addresses {
-  text-align: right;
+  /*text-align: right;*/
   margin-bottom: 30px;
 }
 #customer-order .addresses p {

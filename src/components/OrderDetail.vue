@@ -50,26 +50,11 @@
                             <!-- /.table-responsive -->
 
                             <div class="row addresses">
-                                <div class="col-sm-6">
-                                    <h3 class="text-uppercase">Invoice address</h3>
-                                    <p>John Brown
-                                        <br>13/25 New Avenue
-                                        <br>New Heaven
-                                        <br>45Y 73J
-                                        <br>England
-                                        <br>Great Britain
-                                    </p>
+                                <div class="col-sm-8 offset-md-4">
+                                    <h3 class="text-uppercase"> Address</h3>
+                                    <p>{{order.customer.address}}</p>
                                 </div>
-                                <div class="col-sm-6">
-                                    <h3 class="text-uppercase">Shipping address</h3>
-                                    <p>John Brown
-                                        <br>13/25 New Avenue
-                                        <br>New Heaven
-                                        <br>45Y 73J
-                                        <br>England
-                                        <br>Great Britain
-                                    </p>
-                                </div>
+
                             </div>
                             <!-- /.addresses -->
 
